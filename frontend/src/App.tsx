@@ -6,6 +6,7 @@ import DynamicDetectionGallery from './components/DynamicDetectionGallery';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Database, Lock, UserX, Wifi, BarChart3, Server, FileLock2 } from 'lucide-react';
 import ReportDialog from './components/ReportDialog';
+import LoadingAnimation from './components/LoadingAnimation';
 
 function DeepDefendHero() {
   // State for typewriter effect
@@ -746,8 +747,23 @@ function App() {
     setIsReportDialogOpen(true);
   };
 
+  const handleImageUpload = async (file: File) => {
+    setIsLoading(true);
+    try {
+      // Your existing image upload and processing logic
+      // ... existing code ...
+
+      // After processing is complete
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error processing image:', error);
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen relative bg-black">
+    <div className="min-h-screen bg-gradient-to-br from-dark-primary via-dark-secondary to-dark-accent">
+      <LoadingAnimation isLoading={isLoading} />
       <GlobalBackground />
       <AnimatedBackground />
       <Navbar />

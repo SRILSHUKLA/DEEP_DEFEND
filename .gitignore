@@ -3,4 +3,3 @@ venv/
 frontend/node_modules/
 deepfake-460121-ade936590159.json
 run_app.sh
-__pycache__
