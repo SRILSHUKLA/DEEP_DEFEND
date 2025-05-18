@@ -1,6 +1,10 @@
 # DeepDefend - Advanced Deepfake Detection Platform
 
 ![image](https://github.com/user-attachments/assets/f01d742d-60b6-4cbe-b607-930cc85a8f23)
+![Image](https://github.com/user-attachments/assets/73ba2948-7300-4e74-b9a3-b633461201e0)
+![Image](https://github.com/user-attachments/assets/25d78196-cf33-494b-ac4e-2d6a9d8aa813)
+![Image](https://github.com/user-attachments/assets/283b646d-f0ea-449b-9833-e2122a5b3690)
+![Image](https://github.com/user-attachments/assets/6c9404e3-a265-4b40-b6f6-c6e24f0fe598)
 
 
 DeepDefend is a cutting-edge web application designed to detect and report deepfake content using advanced AI technology. The platform provides real-time analysis of images and videos, helping users identify manipulated media with high accuracy.
