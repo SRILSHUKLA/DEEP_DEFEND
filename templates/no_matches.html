@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Matches Found</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+        .icon {
+            font-size: 72px;
+            margin-bottom: 20px;
+        }
+        .message {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #555;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .back-btn:hover {
+            background-color: #2980b9;
+        }
+        .suggestions {
+            margin-top: 40px;
+            text-align: left;
+            background-color: #eaf2f8;
+            padding: 15px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🔍</div>
+        <h1>No Matches Found</h1>
+        <div class="message">
+            <p>The person in the uploaded image was not recognized as a celebrity, or doesn't have enough matching images online.</p>
+        </div>
+        
+        <a href="/" class="back-btn">← Try Another Image</a>
+        
+        <div class="suggestions">
+            <h3>Suggestions:</h3>
+            <ul>
+                <li>Try uploading a clearer image of the person</li>
+                <li>Make sure the person's face is visible and well-lit</li>
+                <li>Use an image of a more well-known celebrity</li>
+                <li>Try a different angle or a more recognizable photo</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html> 
