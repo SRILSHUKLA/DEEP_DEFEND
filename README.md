@@ -122,6 +122,10 @@ The backend API is available at `http://localhost:5002` with the following endpo
 ## Acknowledgments
 
 - Thanks to all contributors who have helped shape DeepDefend: @Samriddhi903, @SuryadeepSinh-Jadeja, @moKshagna-p, @Mayan10
+- The deepfake detection model used in this project was trained using the Deepfake and Real Images Dataset by Manjil Karki. We extend our gratitude to the   
+  creators for making this dataset publicly available. https://www.kaggle.com/datasets/manjilkarki/deepfake-and-real-images
+
+
 
 
 
