@@ -50,16 +50,16 @@ DeepDefend is a cutting-edge web application designed to detect and report deepf
 
 - **Backend**
   - Python
-  - FastAPI
-  - TensorFlow/PyTorch
+  - Flask
+  - PyTorch
   - OpenCV
+  - Gunicorn
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- Python 3.8+
+- Python 3.10+
 - pip
 
 ### Installation
@@ -67,21 +67,20 @@ DeepDefend is a cutting-edge web application designed to detect and report deepf
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/deepfake-detector.git
-   cd deepfake-detector
+   git clone https://github.com/SRILSHUKLA/DEEP_DEFEND.git
+   cd DEEP_DEFEND
    ```
 
-2. Install frontend dependencies:
+2. Create and activate virtual environment:
 
    ```bash
-   cd frontend
-   npm install
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-3. Install backend dependencies:
+3. Install dependencies:
 
    ```bash
-   cd ../backend
    pip install -r requirements.txt
    ```
 
@@ -93,54 +92,40 @@ DeepDefend is a cutting-edge web application designed to detect and report deepf
 
 ### Running the Application
 
-1. Start the backend server:
+1. Start the server:
 
    ```bash
-   cd backend
-   python main.py
+   python app.py
    ```
 
-2. Start the frontend development server:
-
-   ```bash
-   cd frontend
-   npm start
-   ```
-
-3. Open your browser and navigate to `http://localhost:3000`
+2. Open your browser and navigate to `http://localhost:5002`
 
 ## API Documentation
 
-The backend API is available at `http://localhost:5002` with the following endpoints:
+The API is available at `http://localhost:5002` with the following endpoints:
 
 - `POST /api/search` - Search for deepfake content
 - `POST /api/analyze` - Analyze uploaded media
-- `POST /api/report` - Submit reports to authorities
+
+## Deployment
+
+The application can be deployed on Render:
+
+1. Fork this repository
+2. Create a new Web Service on Render
+3. Connect your repository
+4. Set environment variables
+5. Deploy!
 
 ## Contributing
 
 We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on how to submit pull requests, report issues, and contribute to the project.
 
-## Security
-
-If you discover any security-related issues, please email security@deepdefend.com instead of using the issue tracker.
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
-
-- Thanks to all contributors who have helped shape DeepDefend
-- Special thanks to the open-source community for their invaluable tools and libraries
-- Powered by cutting-edge AI research in deepfake detection
-
 ## Contact
 
-- Website: https://deepdefend.com
-- Email: contact@deepdefend.com
-- Twitter: [@DeepDefend](https://twitter.com/deepdefend)
-
-## Project Status
-
-DeepDefend is under active development. Check our [roadmap](ROADMAP.md) for upcoming features and improvements.
+- GitHub: [@SRILSHUKLA](https://github.com/SRILSHUKLA)
+- Project: [DEEP_DEFEND](https://github.com/SRILSHUKLA/DEEP_DEFEND)
