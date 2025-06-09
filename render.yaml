@@ -2,8 +2,10 @@ services:
   - type: web
     name: deepfake-detector
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
+    buildCommand: |
+      cd frontend && npm install && npm run build
+      cd .. && pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
     envVars:
       - key: FLASK_SECRET_KEY
         sync: false
@@ -11,8 +13,14 @@ services:
         value: 16777216
       - key: DEFAULT_CREDENTIALS_PATH
         value: new_credentials.json
+      - key: NODE_VERSION
+        value: 18.x
+      - key: PORT
+        value: 10000
     plan: free
     disk:
       name: data
       mountPath: /data
       sizeGB: 1
+    healthCheckPath: /
+    autoDeploy: true

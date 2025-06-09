@@ -1,7 +1,9 @@
+import os
 import multiprocessing
 
 # Server socket
-bind = "0.0.0.0:10000"
+port = int(os.environ.get("PORT", 10000))
+bind = f"0.0.0.0:{port}"
 backlog = 2048
 
 # Worker processes
@@ -25,4 +27,8 @@ pidfile = None
 umask = 0
 user = None
 group = None
-tmp_upload_dir = None 
+tmp_upload_dir = None
+
+# SSL (if needed)
+# keyfile = None
+# certfile = None 
