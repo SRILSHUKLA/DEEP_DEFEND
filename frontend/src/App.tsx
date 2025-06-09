@@ -625,26 +625,38 @@ function App() {
         
         const data = await response.json();
         console.log('Data received:', data);
-        console.log('YouTube videos:', data.youtube_videos);
-        console.log('Vimeo videos:', data.vimeo_videos);
-        console.log('Dailymotion videos:', data.dailymotion_videos);
         
-        // Transform the response to match our frontend's expected format
-        const transformedResults: DeepfakeResult[] = data.map((result: any) => ({
+        // Define the type for the backend response
+        interface BackendResult {
+          id: string;
+          imageUrl: string;
+          confidence: number;
+          timestamp: string;
+          celebrity: string;
+          images: string[];
+          youtube_videos: string[];
+          vimeo_videos: string[];
+          dailymotion_videos: string[];
+        }
+
+        // Transform the results from backend
+        // Backend will send exactly 5 images and at most 1 video
+        const transformedResults: DeepfakeResult[] = (data as BackendResult[]).map(result => ({
           id: result.id,
-          imageUrl: result.imageUrl,  // Use the imageUrl from the API response
+          imageUrl: result.imageUrl,
           confidence: result.confidence,
           timestamp: result.timestamp,
           celebrity: result.celebrity,
-          images: result.images || [],
+          images: result.images || [], // Backend will send exactly 5 images
           youtube_videos: result.youtube_videos || [],
           vimeo_videos: result.vimeo_videos || [],
-          dailymotion_videos: result.dailymotion_videos || [],
+          dailymotion_videos: result.dailymotion_videos || [], // Backend will send 1 video in one of these arrays
           isSelected: false
         }));
         
         setResults(transformedResults);
         setHasMore(false);
+        setIsLoading(false);
       } catch (error) {
         console.error('Search error:', error);
         if (error instanceof TypeError && error.message === 'Failed to fetch') {
@@ -652,7 +664,6 @@ function App() {
         } else {
           alert(error instanceof Error ? error.message : 'Failed to search deepfakes. Please try again.');
         }
-      } finally {
         setIsLoading(false);
       }
     }
@@ -664,7 +675,6 @@ function App() {
     setIsLoading(true);
     
     if (activeTab === 'search' && searchQuery) {
-      // Search by URL logic: call backend API
       try {
         console.log('Sending URL search request...');
         const response = await fetch('http://localhost:5002/api/search', {
@@ -682,23 +692,27 @@ function App() {
         
         const data = await response.json();
         console.log('Data received:', data);
-        console.log('YouTube videos:', data.youtube_videos);
-        console.log('Vimeo videos:', data.vimeo_videos);
-        console.log('Dailymotion videos:', data.dailymotion_videos);
         
-        // Transform the response to match our frontend's expected format
-        const transformedResults: DeepfakeResult[] = data.map((result: any) => ({
-          id: result.id,
-          imageUrl: result.imageUrl,  // Use the imageUrl from the API response
-          confidence: result.confidence,
-          timestamp: result.timestamp,
-          celebrity: result.celebrity,
-          images: result.images || [],
-          youtube_videos: result.youtube_videos || [],
-          vimeo_videos: result.vimeo_videos || [],
-          dailymotion_videos: result.dailymotion_videos || [],
-          isSelected: false
-        }));
+        // Transform and limit the results
+        const transformedResults: DeepfakeResult[] = [];
+        
+        for (const result of data) {
+          // We expect exactly 5 images and 1 video from the backend
+          const newResult: DeepfakeResult = {
+            id: result.id,
+            imageUrl: result.imageUrl,
+            confidence: result.confidence,
+            timestamp: result.timestamp,
+            celebrity: result.celebrity,
+            images: result.images || [], // Backend will send exactly 5 images
+            youtube_videos: result.youtube_videos || [],
+            vimeo_videos: result.vimeo_videos || [],
+            dailymotion_videos: result.dailymotion_videos || [], // Backend will send 1 video in one of these arrays
+            isSelected: false
+          };
+          
+          transformedResults.push(newResult);
+        }
         
         setResults(transformedResults);
         setHasMore(false);

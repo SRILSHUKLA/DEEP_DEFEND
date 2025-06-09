@@ -1,73 +1,146 @@
-# Celebrity Recognition Web App
+# DeepDefend - Advanced Deepfake Detection Platform
 
-This web application uses Google Cloud Vision API to identify celebrities in uploaded images and then finds related content from various media sources.
+![DeepDefend Logo](frontend/public/logo.png)
+
+DeepDefend is a cutting-edge web application designed to detect and report deepfake content using advanced AI technology. The platform provides real-time analysis of images and videos, helping users identify manipulated media with high accuracy.
 
 ## Features
 
-- Image upload interface
-- Celebrity recognition using Google Cloud Vision API
-- Retrieval of related content from:
-  - Google Images
-  - YouTube
-  - Vimeo
-  - Dailymotion
-- Responsive modern UI design
+- 🔍 **Advanced Deepfake Detection**
 
-## Setup
+  - Real-time analysis of images and videos
+  - High-accuracy detection using state-of-the-art AI algorithms
+  - Support for multiple media formats (PNG, JPG, MP4)
 
-### 1. Clone the repository
+- 🎯 **Comprehensive Search**
 
-```bash
-git clone <repository-url>
-cd <repository-directory>
-```
+  - Search for similar deepfake content across the internet
+  - URL-based search functionality
+  - Advanced filtering and sorting options
 
-### 2. Install dependencies
+- 📊 **Detailed Analysis**
 
-```bash
-pip install -r requirements.txt
-```
+  - Confidence scores for detected manipulations
+  - Frame-by-frame analysis for videos
+  - Facial landmark detection
+  - Voice pattern analysis
 
-### 3. Set up Google Cloud Vision API
+- 🚨 **Reporting System**
 
-1. Go to the [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select an existing one
-3. Enable the Vision API
-4. Create service account credentials:
-   - Go to IAM & Admin > Service Accounts
-   - Create a new service account
-   - Grant the role "Cloud Vision API User"
-   - Create a key (JSON format)
-   - Download the JSON key file
+  - Direct reporting to relevant authorities
+  - Batch reporting capabilities
+  - Detailed evidence compilation
+  - Support for multiple reporting channels
 
-### 4. Set up Google Cloud credentials
+- 🎨 **Modern UI/UX**
+  - Responsive design
+  - Real-time loading animations
+  - Interactive visualizations
+  - Dark mode interface
 
-Set the environment variable to point to your service account key file:
+## Tech Stack
 
-```bash
-# For Mac/Linux
-export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your-service-account-key.json"
+- **Frontend**
 
-# For Windows PowerShell
-$env:GOOGLE_APPLICATION_CREDENTIALS="C:\path\to\your-service-account-key.json"
-```
+  - React.js
+  - TypeScript
+  - Tailwind CSS
+  - Framer Motion
+  - Lucide Icons
 
-### 5. Run the application
+- **Backend**
+  - Python
+  - FastAPI
+  - TensorFlow/PyTorch
+  - OpenCV
 
-```bash
-python app.py
-```
+## Getting Started
 
-The application will be available at http://127.0.0.1:5000/
+### Prerequisites
 
-## Usage
+- Node.js (v14 or higher)
+- Python 3.8+
+- pip
 
-1. Open the web app in your browser
-2. Upload an image containing a celebrity
-3. The system will identify the celebrity and display:
-   - Images from Google
-   - Videos from YouTube, Vimeo, and Dailymotion
+### Installation
 
-## Note
+1. Clone the repository:
 
-The Google Custom Search API (used for images) and YouTube Data API have daily quota limits on free accounts. You might need to obtain your own API keys if the default ones reach their quota limits. 
+   ```bash
+   git clone https://github.com/yourusername/deepfake-detector.git
+   cd deepfake-detector
+   ```
+
+2. Install frontend dependencies:
+
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+3. Install backend dependencies:
+
+   ```bash
+   cd ../backend
+   pip install -r requirements.txt
+   ```
+
+4. Set up environment variables:
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
+
+### Running the Application
+
+1. Start the backend server:
+
+   ```bash
+   cd backend
+   python main.py
+   ```
+
+2. Start the frontend development server:
+
+   ```bash
+   cd frontend
+   npm start
+   ```
+
+3. Open your browser and navigate to `http://localhost:3000`
+
+## API Documentation
+
+The backend API is available at `http://localhost:5002` with the following endpoints:
+
+- `POST /api/search` - Search for deepfake content
+- `POST /api/analyze` - Analyze uploaded media
+- `POST /api/report` - Submit reports to authorities
+
+## Contributing
+
+We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on how to submit pull requests, report issues, and contribute to the project.
+
+## Security
+
+If you discover any security-related issues, please email security@deepdefend.com instead of using the issue tracker.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Thanks to all contributors who have helped shape DeepDefend
+- Special thanks to the open-source community for their invaluable tools and libraries
+- Powered by cutting-edge AI research in deepfake detection
+
+## Contact
+
+- Website: https://deepdefend.com
+- Email: contact@deepdefend.com
+- Twitter: [@DeepDefend](https://twitter.com/deepdefend)
+
+## Project Status
+
+DeepDefend is under active development. Check our [roadmap](ROADMAP.md) for upcoming features and improvements.

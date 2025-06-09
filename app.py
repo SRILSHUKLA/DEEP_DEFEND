@@ -626,17 +626,17 @@ def search_deepfakes():
             os.remove(temp_path)
             return jsonify({'error': 'No matches found'}), 404
         
-        # Get results from urls.py functions
+        # Get results from urls.py functions - reduced number for efficiency
         print(f"Fetching images for: {celebrity_name}")
-        all_images = get_google_image_urls(celebrity_name + " deepfake", total_num=DEFAULT_NUM_IMAGES * 2)
+        all_images = get_google_image_urls(celebrity_name + " deepfake", total_num=10)  # Reduced from DEFAULT_NUM_IMAGES * 2
         print(f"Found {len(all_images)} images")
         
-        # Get videos with 'deepfake' in title
+        # Get videos with 'deepfake' in title - reduced number for efficiency
         search_query = f"{celebrity_name} deepfake"
         print(f"\nFetching videos with query: {search_query}")
-        youtube_videos = get_youtube_video_urls(search_query, max_results=DEFAULT_NUM_VIDEOS)
-        vimeo_videos = get_vimeo_video_urls(search_query, max_results=DEFAULT_NUM_VIDEOS)
-        dailymotion_videos = get_dailymotion_video_urls(search_query, max_results=DEFAULT_NUM_VIDEOS)
+        youtube_videos = get_youtube_video_urls(search_query, max_results=5)  # Reduced from DEFAULT_NUM_VIDEOS
+        vimeo_videos = get_vimeo_video_urls(search_query, max_results=5)
+        dailymotion_videos = get_dailymotion_video_urls(search_query, max_results=5)
         
         print(f"Found {len(youtube_videos)} YouTube videos")
         print(f"Found {len(vimeo_videos)} Vimeo videos")
@@ -644,12 +644,8 @@ def search_deepfakes():
         
         # Initialize empty results
         verified_images = []
-        verified_youtube = []
-        verified_vimeo = []
-        verified_dailymotion = []
-        
-        # Store timestamps separately
-        video_timestamps = {}
+        verified_video = None  # Store one video
+        video_platform = None  # Track which platform the video is from
         
         # Create initial result object
         result = {
@@ -660,77 +656,75 @@ def search_deepfakes():
             'timestamp': datetime.now().isoformat(),
             'celebrity': celebrity_name,
             'images': verified_images,
-            'youtube_videos': verified_youtube,
-            'vimeo_videos': verified_vimeo,
-            'dailymotion_videos': verified_dailymotion,
-            'video_timestamps': video_timestamps
+            'youtube_videos': [],
+            'vimeo_videos': [],
+            'dailymotion_videos': []
         }
 
-        # Process images and videos in parallel
-        print("\nStarting parallel processing of images and videos...")
-        
-        # Process images first
+        # Process images first - find exactly 5 deepfake images
         print("\nProcessing images...")
         for image_url in all_images:
+            if len(verified_images) >= 5:  # Stop after finding 5 deepfake images
+                print("Found all 5 required deepfake images, stopping image search.")
+                break
+                
             is_celebrity, is_deepfake = verify_celebrity_and_deepfake(image_url, celebrity_name)
             if is_celebrity and is_deepfake:
                 verified_images.append(image_url)
-                print(f"Verified deepfake image {len(verified_images)}/10: {image_url}")
+                print(f"Verified deepfake image {len(verified_images)}/5: {image_url}")
                 result['images'] = verified_images
-                if len(verified_images) >= 10:
+
+        if len(verified_images) < 5:
+            print(f"Warning: Only found {len(verified_images)} deepfake images out of 5 required")
+
+        # Process videos - find first deepfake video from any platform
+        print("\nProcessing videos...")
+        
+        # Try Dailymotion first
+        if not verified_video:
+            print("\nVerifying Dailymotion videos...")
+            for video_url in dailymotion_videos:
+                print(f"\nProcessing Dailymotion video: {video_url}")
+                is_valid, is_deepfake, timestamps = verify_video_frames(video_url, celebrity_name)
+                if is_valid and is_deepfake:
+                    verified_video = video_url
+                    video_platform = 'dailymotion'
+                    result['dailymotion_videos'] = [video_url]
+                    print(f"Found deepfake Dailymotion video, stopping video search.")
                     break
 
-        # Process videos until we find three deepfakes per platform
-        print("\nProcessing videos...")
-        youtube_count = 0
-        vimeo_count = 0
-        dailymotion_count = 0
-        max_videos_per_platform = 3
+        # Try Vimeo if no Dailymotion video found
+        if not verified_video:
+            print("\nVerifying Vimeo videos...")
+            for video_url in vimeo_videos:
+                print(f"\nProcessing Vimeo video: {video_url}")
+                is_valid, is_deepfake, timestamps = verify_video_frames(video_url, celebrity_name)
+                if is_valid and is_deepfake:
+                    verified_video = video_url
+                    video_platform = 'vimeo'
+                    result['vimeo_videos'] = [video_url]
+                    print(f"Found deepfake Vimeo video, stopping video search.")
+                    break
 
-        # Try YouTube first
-        print("\nVerifying YouTube videos...")
-        for video_url in youtube_videos:
-            if youtube_count >= max_videos_per_platform:
-                break
-            print(f"\nProcessing YouTube video: {video_url}")
-            is_valid, is_deepfake, timestamps = verify_video_frames(video_url, celebrity_name)
-            if is_valid and is_deepfake:
-                verified_youtube.append(video_url)
-                youtube_count += 1
-                print(f"Verified deepfake YouTube video {youtube_count}/{max_videos_per_platform}: {video_url}")
-                result['youtube_videos'] = verified_youtube
-
-        # Try Vimeo next
-        print("\nVerifying Vimeo videos...")
-        for video_url in vimeo_videos:
-            if vimeo_count >= max_videos_per_platform:
-                break
-            print(f"\nProcessing Vimeo video: {video_url}")
-            is_valid, is_deepfake, timestamps = verify_video_frames(video_url, celebrity_name)
-            if is_valid and is_deepfake:
-                verified_vimeo.append(video_url)
-                vimeo_count += 1
-                print(f"Verified deepfake Vimeo video {vimeo_count}/{max_videos_per_platform}: {video_url}")
-                result['vimeo_videos'] = verified_vimeo
-
-        # Finally try Dailymotion
-        print("\nVerifying Dailymotion videos...")
-        for video_url in dailymotion_videos:
-            if dailymotion_count >= max_videos_per_platform:
-                break
-            print(f"\nProcessing Dailymotion video: {video_url}")
-            is_valid, is_deepfake, timestamps = verify_video_frames(video_url, celebrity_name)
-            if is_valid and is_deepfake:
-                verified_dailymotion.append(video_url)
-                dailymotion_count += 1
-                print(f"Verified deepfake Dailymotion video {dailymotion_count}/{max_videos_per_platform}: {video_url}")
-                result['dailymotion_videos'] = verified_dailymotion
+        # Finally try YouTube if still no video found
+        if not verified_video:
+            print("\nVerifying YouTube videos...")
+            for video_url in youtube_videos:
+                print(f"\nProcessing YouTube video: {video_url}")
+                is_valid, is_deepfake, timestamps = verify_video_frames(video_url, celebrity_name)
+                if is_valid and is_deepfake:
+                    verified_video = video_url
+                    video_platform = 'youtube'
+                    result['youtube_videos'] = [video_url]
+                    print(f"Found deepfake YouTube video, stopping video search.")
+                    break
 
         print(f"\nFinal Results Summary:")
-        print(f"- {len(verified_images)} verified deepfake images")
-        print(f"- {len(verified_youtube)} verified YouTube videos")
-        print(f"- {len(verified_vimeo)} verified Vimeo videos")
-        print(f"- {len(verified_dailymotion)} verified Dailymotion videos")
+        print(f"- {len(verified_images)} verified deepfake images found")
+        if verified_video:
+            print(f"- 1 verified deepfake {video_platform} video found")
+        else:
+            print("- No verified deepfake videos found")
         
         return jsonify([result])
         
